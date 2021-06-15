@@ -1,0 +1,81 @@
+﻿@model IEnumerable<_3Wafii.Dtos.DeliveryBoyDto>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>All DeliveryBoy.</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="DeilveryBoy" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>UserId</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            var table = $("#DeilveryBoy").DataTable({
+                ajax: {
+                    url: "/api/DeliveryBoy",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "username",
+                        render: function (data, type, Deilvery) {
+                            return "<a href='/DeilveryBoy/edit/" + Deilvery.del_id + "'>" + Deilvery.username + "</a>";
+                        }
+                    },
+                    {
+                        data: "email"
+                    },
+                    {
+                        data: "phone"
+                    },
+                    {
+                        data: "u_id"
+                    },
+                    {
+                        data: "del_id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' deilvery-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#DeilveryBoy").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to delete this Deilvery?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/DeliveryBoy/" + button.attr("deilvery-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+
+
+    </script>
+}

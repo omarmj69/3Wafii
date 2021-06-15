@@ -1,0 +1,136 @@
+﻿@model _3Wafii.Dtos.MealsDto
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_ResturantLayout.cshtml";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Edit my Meal.</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.m_id, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.m_id, new { htmlAttributes = new { @class = "form-control", @id = "m_id", @readonly =true } })
+                @Html.ValidationMessageFor(model => model.m_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="" id="fileId" onchange="imageUploaded()">
+                @Html.ValidationMessageFor(model => model.image, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control", @id = "price" } })
+                @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.m_count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.m_count, new { htmlAttributes = new { @class = "form-control", @id = "m_count" } })
+                @Html.ValidationMessageFor(model => model.m_count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.m_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.m_name, new { htmlAttributes = new { @class = "form-control", @id = "m_name" } })
+                @Html.ValidationMessageFor(model => model.m_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @id = "Description" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" id="btn" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index/" + Session["res"])
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+
+    let base64String = "";
+  
+function imageUploaded() {
+    var file = document.querySelector(
+        'input[type=file]')['files'][0];
+  
+    var reader = new FileReader();
+    console.log("next");
+      
+    reader.onload = function () {
+        base64String = reader.result.replace("data:", "")
+            .replace(/^.+,/, "");
+  
+        imageBase64Stringsep = base64String;
+        console.log(base64String);
+    }
+    reader.readAsDataURL(file);
+}
+
+
+        $(document).ready(function () {
+
+            $("#btn").click(function () {
+                var insert = new Object();
+                insert.m_id = $("#m_id").val();
+                insert.image = base64String;
+                    insert.price = $("#price").val();
+                    insert.m_count =$("#m_count").val();
+                    insert.m_name = $("#m_name").val();
+                    insert.description = $("#Description").val();
+
+
+                $.ajax({
+
+                    url: "/api/Meals",
+                    type: "PUT",
+                    dataType: "json",
+                    data: insert,
+                    success: function () {
+                        window.location.href = "../index";
+                    },
+
+                });
+            });
+          });
+
+
+
+
+</script>
+
+
+}

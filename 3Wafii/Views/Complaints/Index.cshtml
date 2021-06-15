@@ -1,0 +1,75 @@
+﻿@model IEnumerable<_3Wafii.Dtos.ComplaintDto>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>All Complaints.</h2>
+
+<table id="Complaints" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Complaints Id</th>
+            <th>Descrption</th>
+            <th>To</th>
+            <th>From</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            var table = $("#Complaints").DataTable({
+                ajax: {
+                    url: "/api/Complaint",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "com_id",
+
+                    },
+                    {
+                        data: "Descrption"
+                    },
+                    {
+                        data: "From"
+                    },
+                    {
+                        data: "To"
+                    },
+                    {
+                        data: "com_id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' com-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#Complaints").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to delete this complaint?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/Complaint/" + button.attr("com-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+
+
+    </script>
+}

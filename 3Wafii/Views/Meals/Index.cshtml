@@ -1,0 +1,86 @@
+﻿@model IEnumerable<_3Wafii.Dtos.MealsDto>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ResturantLayout.cshtml";
+}
+
+<h2>My Meals</h2>
+<p>
+    @Html.ActionLink("Create New", "Create/" + Session["id"])
+</p>
+<table id="Meals" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Meal Name</th>
+            <th>Meal Count</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            var table = $("#Meals").DataTable({
+                ajax: {
+                    url: "/api/Meals/" +@Session["id"],
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "m_name",
+                        render: function (data, type, Meals) {
+                            return "<a href='/Meals/edit/" + Meals.m_id + "'>" + Meals.m_name + "</a>";
+                        }
+                    },
+                    {
+                        data: "m_count"
+                    },
+                    {
+                        data: "description"
+                    },
+                    {
+                        data: "price"
+                    },
+                    {
+                        data: "image",
+                           render: function (data, type, row, meta) {
+                           var imgsrc = 'data:image/png;base64,' + data; // here data should be in base64 string
+                           return '<img class="img-responsive" src="' + imgsrc +'" height="40px" width="40px">';
+                        }
+                    },
+                    {
+                        data: "m_id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' meal-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#Meals").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to delete this meal?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/Meals/" + button.attr("meal-id") + "/" + @Session["id"],
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+
+
+    </script>
+}

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<_3Wafii.Dtos.CustmerDto>
+
+@{
+   ViewBag.Title = "Index";
+   Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>All Custmer.</h2>
+
+<table id="Customers" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>UserName</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+@section Scripts
+{
+<script>
+
+    $(document).ready(function () {
+        var table = $("#Customers").DataTable({
+            ajax: {
+                url: "/api/Custmers",
+                dataSrc: ""
+            },
+            columns: [
+                {
+                    data: "username",
+                    render: function (data, type, Customers) {
+                        return "<a href='/Customer/edit/" + Customers.cus_id + "'>" + Customers.username + "</a>";
+                    }
+                },
+                {
+                    data: "phone"
+                },
+                {
+                    data: "addresss"
+                },
+                {
+                    data: "email"
+                }
+            ]
+        });
+
+    });
+
+
+
+</script>
+}
+

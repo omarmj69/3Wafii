@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="db_a72f14_fooddelivery02Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="bi_id" />
+          </Key>
+          <Property Name="waiting_time" Type="int" Nullable="false" />
+          <Property Name="bi_price" Type="int" Nullable="false" />
+          <Property Name="bi_id" Type="int" Nullable="false" />
+          <Property Name="bi_date" Type="int" Nullable="false" />
+          <Property Name="del_id" Type="int" Nullable="false" />
+          <Property Name="or_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Complaint">
+          <Key>
+            <PropertyRef Name="com_id" />
+          </Key>
+          <Property Name="com_id" Type="int" Nullable="false" />
+          <Property Name="From" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="To" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="u_id" Type="int" />
+          <Property Name="rest_id" Type="int" />
+          <Property Name="del_id" Type="int" />
+          <Property Name="cus_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="cus_id" />
+          </Key>
+          <Property Name="cus_id" Type="int" Nullable="false" />
+          <Property Name="phone" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="addresss" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="username" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="hash" Type="nvarchar(max)" />
+          <Property Name="salt" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="DeliveryBoy">
+          <Key>
+            <PropertyRef Name="del_id" />
+          </Key>
+          <Property Name="del_id" Type="int" Nullable="false" />
+          <Property Name="phone" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="username" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="u_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Have">
+          <Key>
+            <PropertyRef Name="rest_id" />
+            <PropertyRef Name="m_id" />
+          </Key>
+          <Property Name="rest_id" Type="int" Nullable="false" />
+          <Property Name="m_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Have2">
+          <Key>
+            <PropertyRef Name="m_id" />
+            <PropertyRef Name="or_id" />
+          </Key>
+          <Property Name="m_id" Type="int" Nullable="false" />
+          <Property Name="or_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Meal">
+          <Key>
+            <PropertyRef Name="m_id" />
+          </Key>
+          <Property Name="m_id" Type="int" Nullable="false" />
+          <Property Name="image" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="price" Type="int" Nullable="false" />
+          <Property Name="m_count" Type="int" Nullable="false" />
+          <Property Name="m_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="or_id" />
+          </Key>
+          <Property Name="or_id" Type="int" Nullable="false" />
+          <Property Name="total_price" Type="int" Nullable="false" />
+          <Property Name="or_count" Type="int" Nullable="false" />
+          <Property Name="cus_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resturant">
+          <Key>
+            <PropertyRef Name="rest_id" />
+          </Key>
+          <Property Name="image" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="rest_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="phone" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="rest_id" Type="int" Nullable="false" />
+          <Property Name="u_id" Type="int" Nullable="false" />
+          <Property Name="geo_location_latitude" Type="nvarchar(max)" />
+          <Property Name="geo_location_longitude" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="u_id" />
+          </Key>
+          <Property Name="u_id" Type="int" Nullable="false" />
+          <Property Name="u_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="constraint" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="salt" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK__Bill__del_id__01142BA1">
+          <End Role="DeliveryBoy" Type="Self.DeliveryBoy" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeliveryBoy">
+              <PropertyRef Name="del_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="del_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill__or_id__02084FDA">
+          <End Role="Order" Type="Self.Order" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="or_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="or_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DeilveryBo__u_id__778AC167">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DeliveryBoy" Type="Self.DeliveryBoy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="DeliveryBoy">
+              <PropertyRef Name="u_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Have__m_id__7B5B524B">
+          <End Role="Meal" Type="Self.Meal" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Have" Type="Self.Have" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meal">
+              <PropertyRef Name="m_id" />
+            </Principal>
+            <Dependent Role="Have">
+              <PropertyRef Name="m_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Have__rest_id__7A672E12">
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Have" Type="Self.Have" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resturant">
+              <PropertyRef Name="rest_id" />
+            </Principal>
+            <Dependent Role="Have">
+              <PropertyRef Name="rest_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Have2__m_id__0A9D95DB">
+          <End Role="Meal" Type="Self.Meal" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Have2" Type="Self.Have2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meal">
+              <PropertyRef Name="m_id" />
+            </Principal>
+            <Dependent Role="Have2">
+              <PropertyRef Name="m_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Have2__or_id__0B91BA14">
+          <End Role="Order" Type="Self.Order" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Have2" Type="Self.Have2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="or_id" />
+            </Principal>
+            <Dependent Role="Have2">
+              <PropertyRef Name="or_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__cus_id__7E37BEF6">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="cus_id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Resturant__u_id__1F98B2C1">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="Resturant">
+              <PropertyRef Name="u_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_a72f14_fooddelivery02ModelStoreContainer">
+          <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Complaint" EntityType="Self.Complaint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeliveryBoy" EntityType="Self.DeliveryBoy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Have" EntityType="Self.Have" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Have2" EntityType="Self.Have2" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Meal" EntityType="Self.Meal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resturant" EntityType="Self.Resturant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Bill__del_id__01142BA1" Association="Self.FK__Bill__del_id__01142BA1">
+            <End Role="DeliveryBoy" EntitySet="DeliveryBoy" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill__or_id__02084FDA" Association="Self.FK__Bill__or_id__02084FDA">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DeilveryBo__u_id__778AC167" Association="Self.FK__DeilveryBo__u_id__778AC167">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DeliveryBoy" EntitySet="DeliveryBoy" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Have__m_id__7B5B524B" Association="Self.FK__Have__m_id__7B5B524B">
+            <End Role="Meal" EntitySet="Meal" />
+            <End Role="Have" EntitySet="Have" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Have__rest_id__7A672E12" Association="Self.FK__Have__rest_id__7A672E12">
+            <End Role="Resturant" EntitySet="Resturant" />
+            <End Role="Have" EntitySet="Have" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Have2__m_id__0A9D95DB" Association="Self.FK__Have2__m_id__0A9D95DB">
+            <End Role="Meal" EntitySet="Meal" />
+            <End Role="Have2" EntitySet="Have2" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Have2__or_id__0B91BA14" Association="Self.FK__Have2__or_id__0B91BA14">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="Have2" EntitySet="Have2" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__cus_id__7E37BEF6" Association="Self.FK__Order__cus_id__7E37BEF6">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Resturant__u_id__1F98B2C1" Association="Self.FK__Resturant__u_id__1F98B2C1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Resturant" EntitySet="Resturant" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="db_a72f14_fooddelivery02Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="bi_id" />
+          </Key>
+          <Property Name="waiting_time" Type="Int32" Nullable="false" />
+          <Property Name="bi_price" Type="Int32" Nullable="false" />
+          <Property Name="bi_id" Type="Int32" Nullable="false" />
+          <Property Name="bi_date" Type="Int32" Nullable="false" />
+          <Property Name="del_id" Type="Int32" Nullable="false" />
+          <Property Name="or_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DeliveryBoy" Relationship="Self.FK__Bill__del_id__01142BA1" FromRole="Bill" ToRole="DeliveryBoy" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__Bill__or_id__02084FDA" FromRole="Bill" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Complaint">
+          <Key>
+            <PropertyRef Name="com_id" />
+          </Key>
+          <Property Name="com_id" Type="Int32" Nullable="false" />
+          <Property Name="From" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="To" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="u_id" Type="Int32" />
+          <Property Name="rest_id" Type="Int32" />
+          <Property Name="del_id" Type="Int32" />
+          <Property Name="cus_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="cus_id" />
+          </Key>
+          <Property Name="cus_id" Type="Int32" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="addresss" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="hash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="salt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Order__cus_id__7E37BEF6" FromRole="Customer" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="DeliveryBoy">
+          <Key>
+            <PropertyRef Name="del_id" />
+          </Key>
+          <Property Name="del_id" Type="Int32" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="u_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bills" Relationship="Self.FK__Bill__del_id__01142BA1" FromRole="DeliveryBoy" ToRole="Bill" />
+          <NavigationProperty Name="User" Relationship="Self.FK__DeilveryBo__u_id__778AC167" FromRole="DeliveryBoy" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Meal">
+          <Key>
+            <PropertyRef Name="m_id" />
+          </Key>
+          <Property Name="m_id" Type="Int32" Nullable="false" />
+          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <Property Name="m_count" Type="Int32" Nullable="false" />
+          <Property Name="m_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Resturants" Relationship="Self.Have" FromRole="Meal" ToRole="Resturant" />
+          <NavigationProperty Name="Orders" Relationship="Self.Have2" FromRole="Meal" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="or_id" />
+          </Key>
+          <Property Name="or_id" Type="Int32" Nullable="false" />
+          <Property Name="total_price" Type="Int32" Nullable="false" />
+          <Property Name="or_count" Type="Int32" Nullable="false" />
+          <Property Name="cus_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bills" Relationship="Self.FK__Bill__or_id__02084FDA" FromRole="Order" ToRole="Bill" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Order__cus_id__7E37BEF6" FromRole="Order" ToRole="Customer" />
+          <NavigationProperty Name="Meals" Relationship="Self.Have2" FromRole="Order" ToRole="Meal" />
+        </EntityType>
+        <EntityType Name="Resturant">
+          <Key>
+            <PropertyRef Name="rest_id" />
+          </Key>
+          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="rest_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="rest_id" Type="Int32" Nullable="false" />
+          <Property Name="u_id" Type="Int32" Nullable="false" />
+          <Property Name="geo_location_latitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="geo_location_longitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Resturant__u_id__1F98B2C1" FromRole="Resturant" ToRole="Users" />
+          <NavigationProperty Name="Meals" Relationship="Self.Have" FromRole="Resturant" ToRole="Meal" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="u_id" />
+          </Key>
+          <Property Name="u_id" Type="Int32" Nullable="false" />
+          <Property Name="u_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="constraint" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="salt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DeliveryBoys" Relationship="Self.FK__DeilveryBo__u_id__778AC167" FromRole="Users" ToRole="DeliveryBoy" />
+          <NavigationProperty Name="Resturants" Relationship="Self.FK__Resturant__u_id__1F98B2C1" FromRole="Users" ToRole="Resturant" />
+        </EntityType>
+        <Association Name="FK__Bill__del_id__01142BA1">
+          <End Role="DeliveryBoy" Type="Self.DeliveryBoy" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeliveryBoy">
+              <PropertyRef Name="del_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="del_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bill__or_id__02084FDA">
+          <End Role="Order" Type="Self.Order" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="or_id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="or_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__cus_id__7E37BEF6">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="cus_id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DeilveryBo__u_id__778AC167">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DeliveryBoy" Type="Self.DeliveryBoy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="DeliveryBoy">
+              <PropertyRef Name="u_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Resturant__u_id__1F98B2C1">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="u_id" />
+            </Principal>
+            <Dependent Role="Resturant">
+              <PropertyRef Name="u_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Have">
+          <End Role="Meal" Type="Self.Meal" Multiplicity="*" />
+          <End Role="Resturant" Type="Self.Resturant" Multiplicity="*" />
+        </Association>
+        <Association Name="Have2">
+          <End Role="Meal" Type="Self.Meal" Multiplicity="*" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="db_a72f14_fooddelivery02Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bills" EntityType="Self.Bill" />
+          <EntitySet Name="Complaints" EntityType="Self.Complaint" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="DeliveryBoys" EntityType="Self.DeliveryBoy" />
+          <EntitySet Name="Meals" EntityType="Self.Meal" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Resturants" EntityType="Self.Resturant" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK__Bill__del_id__01142BA1" Association="Self.FK__Bill__del_id__01142BA1">
+            <End Role="DeliveryBoy" EntitySet="DeliveryBoys" />
+            <End Role="Bill" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bill__or_id__02084FDA" Association="Self.FK__Bill__or_id__02084FDA">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Bill" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__cus_id__7E37BEF6" Association="Self.FK__Order__cus_id__7E37BEF6">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DeilveryBo__u_id__778AC167" Association="Self.FK__DeilveryBo__u_id__778AC167">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DeliveryBoy" EntitySet="DeliveryBoys" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Resturant__u_id__1F98B2C1" Association="Self.FK__Resturant__u_id__1F98B2C1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Resturant" EntitySet="Resturants" />
+          </AssociationSet>
+          <AssociationSet Name="Have" Association="Self.Have">
+            <End Role="Meal" EntitySet="Meals" />
+            <End Role="Resturant" EntitySet="Resturants" />
+          </AssociationSet>
+          <AssociationSet Name="Have2" Association="Self.Have2">
+            <End Role="Meal" EntitySet="Meals" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db_a72f14_fooddelivery02ModelStoreContainer" CdmEntityContainer="db_a72f14_fooddelivery02Entities">
+          <EntitySetMapping Name="Bills">
+            <EntityTypeMapping TypeName="db_a72f14_fooddelivery02Model.Bill">
+              <MappingFragment StoreEntitySet="Bill">
+                <ScalarProperty Name="waiting_time" ColumnName="waiting_time" />
+                <ScalarProperty Name="bi_price" ColumnName="bi_price" />
+                <ScalarProperty Name="bi_id" ColumnName="bi_id" />
+                <ScalarProperty Name="bi_date" ColumnName="bi_date" />
+                <ScalarProperty Name="del_id" ColumnName="del_id" />
+                <ScalarProperty Name="or_id" ColumnName="or_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Complaints">
+            <EntityTypeMapping TypeName="db_a72f14_fooddelivery02Model.Complaint">
+              <MappingFragment StoreEntitySet="Complaint">
+                <ScalarProperty Name="com_id" ColumnName="com_id" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="u_id" ColumnName="u_id" />
+                <ScalarProperty Name="rest_id" ColumnName="rest_id" />
+                <ScalarProperty Name="del_id" ColumnName="del_id" />
+                <ScalarProperty Name="cus_id" ColumnName="cus_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="db_a72f14_fooddelivery02Model.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="cus_id" ColumnName="cus_id" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="addresss" ColumnName="addresss" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeliveryBoys">
+            <EntityTypeMapping TypeName="db_a72f14_fooddelivery02Model.DeliveryBoy">
+              <MappingFragment StoreEntitySet="DeliveryBoy">
+                <ScalarProperty Name="del_id" ColumnName="del_id" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="u_id" ColumnName="u_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Meals">
+            <EntityTypeMapping TypeName="db_a72f14_fooddelivery02Model.Meal">
+              <MappingFragment StoreEntitySet="Meal">
+                <ScalarProperty Name="m_id" ColumnName="m_id" />
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="m_count" ColumnName="m_count" />
+                <ScalarProperty Name="m_name" ColumnName="m_name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="db_a72f14_fooddelivery02Model.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="or_id" ColumnName="or_id" />
+                <ScalarProperty Name="total_price" ColumnName="total_price" />
+                <ScalarProperty Name="or_count" ColumnName="or_count" />
+                <ScalarProperty Name="cus_id" ColumnName="cus_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resturants">
+            <EntityTypeMapping TypeName="db_a72f14_fooddelivery02Model.Resturant">
+              <MappingFragment StoreEntitySet="Resturant">
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="rest_name" ColumnName="rest_name" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="rest_id" ColumnName="rest_id" />
+                <ScalarProperty Name="u_id" ColumnName="u_id" />
+                <ScalarProperty Name="geo_location_latitude" ColumnName="geo_location_latitude" />
+                <ScalarProperty Name="geo_location_longitude" ColumnName="geo_location_longitude" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="db_a72f14_fooddelivery02Model.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="u_id" ColumnName="u_id" />
+                <ScalarProperty Name="u_name" ColumnName="u_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="constraint" ColumnName="constraint" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Have" TypeName="db_a72f14_fooddelivery02Model.Have" StoreEntitySet="Have">
+            <EndProperty Name="Meal">
+              <ScalarProperty Name="m_id" ColumnName="m_id" />
+            </EndProperty>
+            <EndProperty Name="Resturant">
+              <ScalarProperty Name="rest_id" ColumnName="rest_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Have2" TypeName="db_a72f14_fooddelivery02Model.Have2" StoreEntitySet="Have2">
+            <EndProperty Name="Meal">
+              <ScalarProperty Name="m_id" ColumnName="m_id" />
+            </EndProperty>
+            <EndProperty Name="Order">
+              <ScalarProperty Name="or_id" ColumnName="or_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<_3Wafii.Dtos.OrderDto>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ResturantLayout.cshtml";
+}
+
+<h2>My Orders.</h2>
+
+<table id="Order" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Order Number</th>
+            <th>Order Count</th>
+            <th>Total Price</th>
+            <th>Cus_id</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            var table = $("#Order").DataTable({
+                ajax: {
+                    url: "/api/orders/getorders/" +@Session["id"],
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "or_id",
+                        render: function (data, type, Order) {
+                            return "<a href='/Order/Orderdetails/" + Order.or_id + "'>" + Order.or_id + "</a>";
+                        }
+                    },
+                    {
+                        data: "or_count"
+                    },
+                    {
+                        data: "total_price"
+                    },
+                    {
+                        data: "cus_id"
+                    }
+                ]
+            });
+            setInterval(function () {                
+                table.ajax.reload();
+            },1000 * 50);
+        });
+
+
+
+    </script>
+}
+

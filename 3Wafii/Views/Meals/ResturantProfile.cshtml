@@ -1,0 +1,130 @@
+﻿@model _3Wafii.Dtos.ResturantsDto
+
+@{
+
+    ViewBag.Title = "ResturantProfile";
+    Layout = "~/Views/Shared/_ResturantLayout.cshtml";
+}
+
+<h2>ResturantProfile</h2>
+
+<div>
+    <h4>My Resturant Information.</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dd>
+            @Html.HiddenFor(model => model.image, new { htmlAttributes = new { @id = "image" } })
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.address)
+        </dt>
+
+        <dd>
+            @Html.HiddenFor(model => model.address, new { htmlAttributes = new { @id = "address" } })
+            @Html.DisplayFor(model => model.address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rest_name)
+        </dt>
+
+        <dd>
+            @Html.HiddenFor(model => model.rest_name, new { htmlAttributes = new { @id = "rest_name" } })
+            @Html.DisplayFor(model => model.rest_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone)
+        </dt>
+
+        <dd>
+            @Html.HiddenFor(model => model.phone, new { htmlAttributes = new { @id = "phone" } })
+            @Html.DisplayFor(model => model.phone)
+        </dd>
+
+        <dd>
+            @Html.HiddenFor(model => model.rest_id, new { htmlAttributes = new { @id = "rest_id" } })
+        </dd>
+
+        <dd>
+            @Html.HiddenFor(model => model.u_id, new { htmlAttributes = new { @id = "u_id" } })
+        </dd>
+
+        <dd>
+            @Html.HiddenFor(model => model.geo_location_latitude, new { htmlAttributes = new { @id = "geo_location_latitude" } })
+        </dd>
+
+        <dd>
+            @Html.HiddenFor(model => model.geo_location_longitude, new { htmlAttributes = new { @id = "geo_location_longitude" } })
+        </dd>
+
+    </dl>
+</div>
+<br>
+<h5 class="warning">Warning: Click the button one time or when you be at resturant.</h5>
+<input type="button" id="btnn" value="SET Location" class="btn btn-default" />
+<br>
+<p>
+    @Html.ActionLink("Back to List", "Index/" + Session["res"])
+</p>
+
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            $("#btnn").click(function () {
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            }
+            else {
+                alert("Geolocation is not supported by this browser.");
+            }
+                        });
+
+
+        function showPosition(position) {
+            var insert = new Object();
+                    insert.image = $("#image").val();
+                    insert.address = $("#address").val();
+                    insert.rest_name = $("#rest_name").val();
+                    insert.phone =$("#phone").val();
+                    insert.rest_id = $("#rest_id").val();
+                    insert.u_id = $("#u_id").val();
+                    insert.geo_location_latitude = position.coords.latitude;
+                    insert.geo_location_longitude = position.coords.longitude;
+
+                $.ajax({
+
+                    url: "/api/resturants",
+                    type: "PUT",
+                    dataType: "json",
+                    data: insert,
+                    success: function () {
+                        window.location.href = "../index/" +insert.rest_id;
+                    },
+
+                });
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+            }
+                      });
+</script>
+}

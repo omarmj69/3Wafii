@@ -1,0 +1,92 @@
+﻿@model  IEnumerable<_3Wafii.Dtos.ResturantsDto>
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>All Resturants.</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="Resturant" class="table table-bordered table-hover">
+    <thead>
+       <tr>
+         <th>Resturant Name</th>
+         <th>Phone</th>
+         <th>Address</th>
+         <th>logo</th>
+         <th>UserId</th>
+         <th>Delete</th>
+       </tr>
+    </thead>
+       <tbody></tbody>
+
+</table>
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+           var table = $("#Resturant").DataTable({
+                ajax: {
+                    url: "/api/Resturants",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data : "rest_name",
+                        render: function (data, type, resturants) {
+                            return "<a href='/resturants/edit/" + resturants.rest_id + "'>" + resturants.rest_name + "</a>";
+                        }
+                    },
+                    {
+                        data : "phone"
+                    },
+                    {
+                        data: "address"
+                    },
+                    {
+                          
+                        data: "image",
+                           render: function (data, type, row, meta) {
+                           var imgsrc = 'data:image/png;base64,' + data; // here data should be in base64 string
+                           return '<img class="img-responsive" src="' + imgsrc +'" height="40px" width="40px">';
+                        }
+
+                    },
+                    {
+                        data : "u_id"
+                    },
+                    {
+                        data: "rest_id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-resturant-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+                                
+
+
+           
+            $("#Resturant").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to delete this resturant?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/resturants/" + button.attr("data-resturant-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+        
+    </script>
+}
